@@ -9,11 +9,12 @@ import { buildCourseSchema, buildArticleSchema, buildFaqSchema, buildBreadcrumbS
 import { Sidebar } from "@/components/layout/Sidebar";
 import { ArchitectureTabs } from "@/components/tabs/ArchitectureTabs";
 
+export const dynamic = "force-dynamic"; 
 // ── generateStaticParams : pré-génère les 7 routes ───────────────────
-export async function generateStaticParams() {
+/*export async function generateStaticParams() {
   const archs = await prisma.architecture.findMany({ select: { slug: true } });
   return archs.map((a) => ({ slug: a.slug }));
-}
+}*/
 
 // ── generateMetadata ─────────────────────────────────────────────────
 export async function generateMetadata({
