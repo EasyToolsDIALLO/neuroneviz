@@ -1,0 +1,99 @@
+// This is your Prisma schema file,
+// learn more about it in the docs: https://pris.ly/d/prisma-schema
+
+// Looking for ways to speed up your queries, or scale easily with your serverless or edge functions?
+// Try Prisma Accelerate: https://pris.ly/cli/accelerate-init
+
+generator client {
+  provider = "prisma-client"
+  output   = "../src/app/generated/prisma"
+}
+
+datasource db {
+  provider = "postgresql"
+}
+
+// ─────────────────────────────────────────────────────────────────────────────
+// Architecture racine : CNN, RNN, LSTM, GRU, GNN, Transformers, LLM
+// ─────────────────────────────────────────────────────────────────────────────
+model Architecture {
+  id          String   @id @default(cuid())
+  slug        String   @unique
+  name        String
+  shortName   String
+  description String
+  icon        String
+  order       Int      @default(0)
+  color       String   @default("#6366f1")
+
+  // Relations 1-1
+  concept     Concept?
+  simulation  Simulation?
+  codeImpl    CodeImplementation?
+  fromScratch FromScratch?
+
+  createdAt   DateTime @default(now())
+  updatedAt   DateTime @updatedAt
+
+  @@index([slug])
+  @@index([order])
+}
+
+// ─────────────────────────────────────────────────────────────────────────────
+// Onglet 1 — Concept théorique
+// ─────────────────────────────────────────────────────────────────────────────
+model Concept {
+  id             String       @id @default(cuid())
+  architectureId String       @unique
+  architecture   Architecture @relation(fields: [architectureId], references: [id], onDelete: Cascade)
+
+  introduction  String   // Markdown avec bold, code inline
+  keyPoints     Json     // string[]
+  layers        Json     // { name, role, formula }[]
+  advantages    Json     // string[]
+  disadvantages Json     // string[]
+  useCases      Json     // { label, example }[]
+}
+
+// ─────────────────────────────────────────────────────────────────────────────
+// Onglet 2 — Simulation interactive
+// ─────────────────────────────────────────────────────────────────────────────
+model Simulation {
+  id             String       @id @default(cuid())
+  architectureId String       @unique
+  architecture   Architecture @relation(fields: [architectureId], references: [id], onDelete: Cascade)
+
+  description   String
+  defaultInput  Json     // Données d'entrée par défaut (image, séquence, graphe…)
+  steps         Json     // { title, description }[]
+}
+
+// ─────────────────────────────────────────────────────────────────────────────
+// Onglet 3 — Implémentation PyTorch
+// ─────────────────────────────────────────────────────────────────────────────
+model CodeImplementation {
+  id             String       @id @default(cuid())
+  architectureId String       @unique
+  architecture   Architecture @relation(fields: [architectureId], references: [id], onDelete: Cascade)
+
+  framework     String   @default("PyTorch")
+  language      String   @default("python")
+  title         String
+  description   String
+  code          String   // Code complet
+  sections      Json     // { title, explanation, code }[] — sections annotées
+}
+
+// ─────────────────────────────────────────────────────────────────────────────
+// Onglet 4 — From Scratch (NumPy + formules mathématiques)
+// ─────────────────────────────────────────────────────────────────────────────
+model FromScratch {
+  id             String       @id @default(cuid())
+  architectureId String       @unique
+  architecture   Architecture @relation(fields: [architectureId], references: [id], onDelete: Cascade)
+
+  description    String
+  formulas       Json     // { label, latex, description }[]
+  implementation String   // Code NumPy complet
+  steps          Json     // { title, explanation, code }[]
+}

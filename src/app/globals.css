@@ -1,26 +1,70 @@
+/* ── Tailwind CSS v4 ─────────────────────────────────────────────────────── */
+/* En v4 : @import "tailwindcss" remplace @tailwind base/components/utilities  */
 @import "tailwindcss";
 
-:root {
-  --background: #ffffff;
-  --foreground: #171717;
+/* Plugin typography (prose classes) */
+@plugin "@tailwindcss/typography";
+
+/* ── Design tokens — CSS-first config (remplace tailwind.config.ts) ──────── */
+@theme {
+  /* Fonts (Geist — injectées via CSS variables dans layout.tsx) */
+  --font-sans: var(--font-geist-sans), system-ui, sans-serif;
+  --font-mono: var(--font-geist-mono), monospace;
+
+  /* Border radius personnalisés */
+  --radius-2xl: 1rem;
+  --radius-3xl: 1.5rem;
+
+  /* Couleurs de marque NeuroViz */
+  --color-brand-cnn:         #6366f1;
+  --color-brand-rnn:         #8b5cf6;
+  --color-brand-lstm:        #06b6d4;
+  --color-brand-gru:         #10b981;
+  --color-brand-gnn:         #f59e0b;
+  --color-brand-transformers:#ef4444;
+  --color-brand-llm:         #ec4899;
 }
 
-@theme inline {
-  --color-background: var(--background);
-  --color-foreground: var(--foreground);
-  --font-sans: var(--font-geist-sans);
-  --font-mono: var(--font-geist-mono);
+/* ── Animation fadeIn ────────────────────────────────────────────────────── */
+@keyframes fadeIn {
+  from { opacity: 0; transform: translateY(8px); }
+  to   { opacity: 1; transform: translateY(0); }
 }
 
-@media (prefers-color-scheme: dark) {
-  :root {
-    --background: #0a0a0a;
-    --foreground: #ededed;
-  }
+@utility animate-fade-in {
+  animation: fadeIn 0.3s ease forwards;
 }
 
-body {
-  background: var(--background);
-  color: var(--foreground);
-  font-family: Arial, Helvetica, sans-serif;
+/* ── Highlight.js — Tokyo Night ─────────────────────────────────────────── */
+.hljs                  { color: #a9b1d6; background: #1a1b2e; }
+.hljs-keyword          { color: #bb9af7; font-style: italic; }
+.hljs-title,
+.hljs-title.function_  { color: #7aa2f7; }
+.hljs-title.class_     { color: #2ac3de; }
+.hljs-string           { color: #9ece6a; }
+.hljs-number           { color: #ff9e64; }
+.hljs-comment          { color: #565f89; font-style: italic; }
+.hljs-built_in         { color: #2ac3de; }
+.hljs-params           { color: #cfc9c2; }
+.hljs-attr             { color: #73daca; }
+.hljs-variable,
+.hljs-template-variable{ color: #c0caf5; }
+.hljs-operator         { color: #89ddff; }
+.hljs-punctuation      { color: #89ddff; }
+.hljs-meta             { color: #41a6b5; }
+.hljs-decorator        { color: #e0af68; }
+.hljs-regexp           { color: #b4f9f8; }
+.hljs-literal          { color: #ff9e64; font-style: italic; }
+
+/* ── KaTeX overflow ──────────────────────────────────────────────────────── */
+.katex-display {
+  overflow-x: auto;
+  overflow-y: hidden;
+  padding: 0.5rem 0;
 }
+
+/* ── Scrollbar fine ──────────────────────────────────────────────────────── */
+::-webkit-scrollbar       { width: 6px; height: 6px; }
+::-webkit-scrollbar-track { background: transparent; }
+::-webkit-scrollbar-thumb { background: #e2e8f0; border-radius: 3px; }
+::-webkit-scrollbar-thumb:hover { background: #cbd5e1; }
