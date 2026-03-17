@@ -1,9 +1,8 @@
 import type { NextConfig } from "next";
 
 const nextConfig: NextConfig = {
-  // ── Stable in Next.js 16 (moved OUT of experimental) ────────────────────
-  reactCompiler: true,    // was experimental.reactCompiler
-  cacheComponents: true,  // was experimental.dynamicIO / experimental.ppr
+  reactCompiler: true,
+  // cacheComponents: true, // ← retiré : incompatible avec dynamic/runtime sur les routes
 
   compress: true,
 
@@ -17,10 +16,10 @@ const nextConfig: NextConfig = {
       {
         source: "/(.*)",
         headers: [
-          { key: "X-Frame-Options",       value: "DENY" },
-          { key: "X-Content-Type-Options", value: "nosniff" },
-          { key: "Referrer-Policy",        value: "strict-origin-when-cross-origin" },
-          { key: "Permissions-Policy",     value: "camera=(), microphone=(), geolocation=()" },
+          { key: "X-Frame-Options",        value: "DENY" },
+          { key: "X-Content-Type-Options",  value: "nosniff" },
+          { key: "Referrer-Policy",         value: "strict-origin-when-cross-origin" },
+          { key: "Permissions-Policy",      value: "camera=(), microphone=(), geolocation=()" },
         ],
       },
       {
